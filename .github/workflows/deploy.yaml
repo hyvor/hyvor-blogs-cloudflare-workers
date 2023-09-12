@@ -1,6 +1,7 @@
 name: Deploy Worker
 on:
   repository_dispatch:
+  workflow_dispatch:
 jobs:
   deploy:
     runs-on: ubuntu-latest
