@@ -24,7 +24,8 @@ export default {
 		if (request.method === 'POST') {
 			if (blogPath === '/_hb_webhook') {
 				const json = await request.json();
-				return await blog.handleWebhookRequest(json, env.WEBHOOK_SECRET);
+				const signature = request.headers.get('X-Signature');
+				return await blog.handleWebhookRequest(json, signature || '');
 			} else {
 				return notFoundResponse();
 			}
