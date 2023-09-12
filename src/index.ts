@@ -1,32 +1,62 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { Blog } from "@hyvor/hyvor-blogs-serve-web";
 
 export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-	//
-	// Example binding to a Service. Learn more at https://developers.cloudflare.com/workers/runtime-apis/service-bindings/
-	// MY_SERVICE: Fetcher;
-	//
-	// Example binding to a Queue. Learn more at https://developers.cloudflare.com/queues/javascript-apis/
-	// MY_QUEUE: Queue;
+	BASE_PATH: string,
+	DELIVERY_API_KEY: string,
+	WEBHOOK_SECRET: string,
+	BLOG_CACHE: KVNamespace,
 }
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		return new Response('Hello Hyvor Blogs!');
+
+		const url = new URL(request.url);
+		const path = url.pathname;
+		const blogPath = path.replace(env.BASE_PATH, '');
+		const blog = getBlog(env);
+
+		if (request.method === 'POST') {
+			if (blogPath === '/_hb_webhook') {
+				const json = await request.json();
+				return await blog.handleWebhookRequest(json, env.WEBHOOK_SECRET);
+			} else {
+				return notFound();
+			}
+		}
+
+		return await blog.handleBlogRequest(blogPath);
 	},
 };
+
+function notFound() {
+	return new Response('not found', { status: 404 });
+}
+
+function getBlog(env: Env) {
+
+	return new Blog({
+        subdomain: 'upload-them-etest',
+        deliveryApiKey: env.DELIVERY_API_KEY,
+        webhookSecret: env.WEBHOOK_SECRET,
+
+		cache: {
+			get: async (key: string) => {
+				const val = await env.BLOG_CACHE.get(key);
+				if (!val) return null;
+
+				try {
+					return JSON.parse(val);
+				} catch (e) {
+					return null;
+				}
+			},
+			set: async (key: string, value: string) => {
+				await env.BLOG_CACHE.put(key, JSON.stringify(value));
+			},
+			delete: async (key: string) => {
+				await env.BLOG_CACHE.delete(key);
+			}
+		}
+    });
+
+}
