@@ -12,3 +12,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          preCommands: |
+            cp wrangler.example.toml wrangler.toml
