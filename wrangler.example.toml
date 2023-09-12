@@ -8,7 +8,7 @@ SUBDOMAIN = ""
 DELIVERY_API_KEY = ""
 WEBHOOK_SECRET = ""
 
-[[kv_namespaces]]
-binding = "BLOG_CACHE"
+# [[kv_namespaces]]
+#binding = "BLOG_CACHE"
 # id = "<YOUR_NAMESPACE_ID>"
 # preview_id = "<YOUR_PREVIEW_NAMESPACE_ID>"
