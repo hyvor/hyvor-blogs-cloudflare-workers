@@ -1,5 +1,5 @@
 {
-  "name": "orange-hill-0081",
+  "name": "hyvor-blogs-cloudflare-workers",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,6 @@
     "wrangler": "^3.0.0"
   },
   "dependencies": {
-    "@hyvor/hyvor-blogs-serve-web": "^1.0.3"
+    "@hyvor/hyvor-blogs-serve-web": "^1.0.5"
   }
 }

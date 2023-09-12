@@ -65,8 +65,10 @@ function getBlog(env: Env) {
         subdomain: env.SUBDOMAIN,
         deliveryApiKey: env.DELIVERY_API_KEY,
         webhookSecret: env.WEBHOOK_SECRET,
-
-		cache: getCache(env.BLOG_CACHE)
+		cache: getCache(env.BLOG_CACHE),
+		experimental: {
+			dontSetCacheInFetch: true
+		}
 	});
 
 }
