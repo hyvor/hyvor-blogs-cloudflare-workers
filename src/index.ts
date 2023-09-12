@@ -45,6 +45,9 @@ function validateConfig(env: Env) {
 	if (!env.DELIVERY_API_KEY) {
 		return 'DELIVERY_API_KEY is not set';
 	}
+	if (!env.BLOG_CACHE) {
+		return 'BLOG_CACHE is not set';
+	}
 	return null;
 }
 
