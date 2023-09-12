@@ -10,5 +10,5 @@ WEBHOOK_SECRET = ""
 
 [[kv_namespaces]]
 binding = "BLOG_CACHE"
-id = ""
+id = "<YOUR_NAMESPACE_ID>"
 preview_id = ""
