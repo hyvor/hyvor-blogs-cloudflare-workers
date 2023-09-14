@@ -18,7 +18,12 @@ export default {
 
 		const url = new URL(request.url);
 		const path = url.pathname;
-		const blogPath = path.replace(env.BASE_PATH, '');
+
+		if (!path.startsWith(env.BASE_PATH)) {
+			return errorResponse(`Invalid BASE_PATH expecting=${env.BASE_PATH} current=${path}`);
+		}
+
+		const blogPath = path.substring(env.BASE_PATH.length);
 		const blog = getBlog(env);
 
 		if (request.method === 'POST') {
