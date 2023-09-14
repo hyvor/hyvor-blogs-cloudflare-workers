@@ -66,4 +66,18 @@ describe('http requests', () => {
 
     });
 
+    test('cache health', async () => {
+
+        const worker = await getWorker();
+        const resp = await worker.fetch('https://example.com/blog/_cache_health');
+
+        const text = await resp.text();
+        expect(text).toBe('Healthy ✅');
+
+    });
+
+
+    // TODO: add webhook and blog tests
+    // needs mocking
+
 });
