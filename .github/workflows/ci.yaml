@@ -23,5 +23,5 @@ jobs:
           cache: "npm"
       - name: Execute Unit tests
       - run: |
-        npm ci
-        npm run test
+          npm ci
+          npm run test
