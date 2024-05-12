@@ -1,0 +1,14 @@
+name = "hyvor-blogs"
+main = "src/index.ts"
+compatibility_date = "2023-09-04"
+
+[vars]
+BASE_PATH = "/blog"
+SUBDOMAIN = ""
+DELIVERY_API_KEY = ""
+WEBHOOK_SECRET = ""
+
+# [[kv_namespaces]]
+#binding = "BLOG_CACHE"
+# id = "<YOUR_NAMESPACE_ID>"
+# preview_id = "<YOUR_PREVIEW_NAMESPACE_ID>"
